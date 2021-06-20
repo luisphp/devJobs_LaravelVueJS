@@ -1,0 +1,3 @@
+<a class="text-white text-sm uppercase font-bold p-3 {{ Request::is('vacantes') ? 'bg-gray-500' : '' }} " href=" {{ route('vacantes.index') }} ">Ver vacantes</a>
+<a class="text-white text-sm uppercase font-bold p-3 {{ Request::is('vacantes/create') ? 'bg-gray-500' : '' }} " href=" {{ route('vacantes.create') }} ">Nueva vacante</a>
+<a class="text-white text-sm uppercase font-bold p-3">Pasarme a premium</a>

@@ -16,6 +16,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    {{-- Contenido personalizado para css  --}}
+    @yield('styles')
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -25,7 +28,8 @@
             <div class="container mx-auto md:px-0 ">
                 <div class="flex items-center justify-around">
                     <a class="text-2xl text-white" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        {{-- {{ config('app.name', 'Laravel') }} --}}
+                        {{ '< devJobs />' }}
                     </a>
                         <div class="flex-1 text-right">
 
@@ -57,10 +61,18 @@
                 </div>    
             </div>
         </nav>
+        <div class="bg-gray-700">
 
+            <nav class="container mx-auto flex space-x-1">
+                @yield('navegacion')
+
+            </nav>
+        </div>
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+
+    @yield('scripts')
 </body>
 </html>
