@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 require("tailwindcss");
 require('laravel-mix-tailwind');
+require('vue');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,4 +17,6 @@ require('laravel-mix-tailwind');
 mix.js('resources/js/app.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
-    .tailwind();
+    .postCss("resources/css/app.css", "public/css", [
+        require("tailwindcss"),
+       ]);

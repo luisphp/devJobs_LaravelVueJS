@@ -27,3 +27,6 @@ Route::get('/vacantes' ,[App\Http\Controllers\VacanteController::class, 'index']
 Route::get('/vacantes/create' ,[App\Http\Controllers\VacanteController::class, 'create'])->name('vacantes.create');
     // Ruta especial para subir imagen provenientes de dropzone
 Route::post('/vacantes/imagen',[App\Http\Controllers\VacanteController::class, 'imagen'])->name('vacantes.imagen');
+Route::post('/vacantes/borrarimagen',[App\Http\Controllers\VacanteController::class, 'borrarimagen'])->name('vacantes.borrarimagen');
+
+Route::get('/inicio' , [App\Http\Controllers\Inicio::class, 'index'])->name('inicioparticular');

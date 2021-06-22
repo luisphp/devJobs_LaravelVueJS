@@ -8,6 +8,8 @@ use App\Models\Categoria;
 use App\Models\Experiencia;
 use App\Models\Ubicacion;
 use App\Models\Salario;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class VacanteController extends Controller
 {
@@ -16,7 +18,7 @@ class VacanteController extends Controller
     {
         // revisar que el usuario este autenticado y verificado 
 
-        $this->middleware(['auth', 'verified']);
+        // $this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -115,7 +117,32 @@ class VacanteController extends Controller
 
         $imagen = $request->file('file');
         
+        $nombreImagen = time() . '.'.$imagen->extension();
+
+        $imagen->move(public_path('storage/vacantes'), $nombreImagen);
+
         //Se usa para obtener la extension del archivo ejemplo: png, jpg, txt, pdf, etc;
-        return $imagen->extension();
+        return response()->json(['correcto' => $nombreImagen]);
+    }
+
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function borrarimagen(Request $request)
+    {
+
+        if($request->ajax()){
+            $imagen = $request->get('imagen');
+
+
+            if(File::exists( 'storage/vacantes/'.$imagen )){
+               File::delete( 'storage/vacantes/'.$imagen );
+            }
+
+            return response('Imagen Eliminada', 200);
+        }
     }
 }

@@ -16,7 +16,6 @@
 
 @section('content')
 
-
     <h1 class="text-2xl text-center mt-10">Crear nueva vacante</h1>
 
     {{-- {{ $experiencias }} --}}
@@ -66,6 +65,20 @@
                 @endforeach
             </select>
         </div>
+        <div  class="mb-5">
+            <label class="block text-gray-700 text-sm mb-2" for="skills"> Habilidades y conocimientos: </label>
+            @php
+            $skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails']
+            @endphp
+
+
+                
+            {{-- <habilidades></habilidades> --}}
+                <habilidades-component :skills="{{ json_encode($skills) }}"></habilidades-component>
+
+            
+
+        </div>
         
         {{-- MediumEditor --}}
         <div class="mb-5">
@@ -86,9 +99,11 @@
             <div class="dropzone rounded bg-gray-100 agrandar" id="dropzoneDevJobs">
 
             </div>
+
+            <input type="hidden" id="imagen" name="imagen">
             <p id="error">  </p>
         </div>
-
+        
         
         {{-- Button to save vacante --}}
         <div class="flex flex-wrap">
@@ -105,6 +120,7 @@
 @endsection
 
 @section('scripts')
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js" integrity="sha512-5D/0tAVbq1D3ZAzbxOnvpLt7Jl/n8m/YGASscHTNYsBvTcJnrYNiDIJm6We0RPJCpFJWowOPNz9ZJx7Ei+yFiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js" integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -140,14 +156,21 @@
                 'X-CSRF-TOKEN' : document.querySelector('meta[name=csrf-token]').content
             },
             success: function(file, response){
-                // console.log('Respuesta del servidor', response);
+                console.log('Respuesta del servidor (carga imagen): ', response.correcto);
                 document.querySelector('#error').textContent = '';
+
+
+                //Coloca la respuesta del servidor en el inputHidden
+                document.querySelector('#imagen').value = response.correcto;
+
+                //Añadir al objeto del archivo el nombre del servidor
+                file.nombreServidor = response.correcto;
             },
-            error: function(file, response){
-                // console.log(response);
+            /*error: function(file, response){
+                console.log(response);
                 // console.log(file);
                 document.querySelector('#error').textContent = 'Formato no valido';
-            },
+            },*/
             maxfilesexceeded: function(file){
                 // console.log('No puedes subir mas de 1 archivo');
                 if( this.files[1] != null){
@@ -157,8 +180,18 @@
                 }
             },
             removedfile: function(file, response){
+
+                file.previewElement.parentNode.removeChild(file.previewElement);
+
                 console.log(file);
                 console.log('El archivo borrado fue', file);
+                
+                const params = {
+                    imagen: file.nombreServidor
+                }
+                
+                axios.post('./borrarimagen', params )
+                .then(response => console.log(response));
             }
 
         });
