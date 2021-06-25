@@ -18,7 +18,7 @@ class VacanteController extends Controller
     {
         // revisar que el usuario este autenticado y verificado 
 
-        // $this->middleware(['auth', 'verified']);
+        $this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -28,9 +28,6 @@ class VacanteController extends Controller
      */
     public function index()
     {
-
-
-
         return view('vacantes.index');
     }
 
@@ -62,6 +59,11 @@ class VacanteController extends Controller
         //Validacion
         $data = $request->validate([
             'titulo' => 'required|min:6',
+            'categoria' => 'required',
+            'ubicacion' => 'required',
+            'salario' => 'required',
+            'descripcion' => 'required|min:30',
+            'imagen' => 'required'
             
         ]);
 

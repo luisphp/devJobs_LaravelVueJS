@@ -43,9 +43,18 @@
 
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($categorias as $categoria)
-                    <option value="{{ $categoria->id }}" > {{ $categoria->nombre }} </option>
+                    <option 
+                    {{ old('categoria') == $categoria->id ? 'selected' : '' }}
+                        value="{{ $categoria->id }}" > {{ $categoria->nombre }} 
+                    </option>
                 @endforeach
             </select>
+            @error('categoria')
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block "> {{$message}}</span>
+                </div>
+            @enderror
         </div>
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="experiencia"> Experiencia: </label>
@@ -53,9 +62,18 @@
 
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($experiencias as $experiencia)
-                    <option value="{{ $experiencia->id }}" > {{ $experiencia->nombre }} </option>
+                    <option 
+                    {{ old('experiencia') == $experiencia->id ? 'selected' : '' }}
+                    value="{{ $experiencia->id }}" > {{ $experiencia->nombre }} </option>
                 @endforeach
             </select>
+            @error('experiencia')
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block "> {{$message}}</span>
+                </div>
+            @enderror
+            
         </div>
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="ubicacion"> Ubicación: </label>
@@ -63,9 +81,17 @@
 
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($ubicacions as $ubicacion)
-                    <option value="{{ $ubicacion->id }}" > {{ $ubicacion->nombre }} </option>
+                    <option 
+                    {{ old('ubicacion') == $ubicacion->id ? 'selected' : '' }}
+                    value="{{ $ubicacion->id }}" > {{ $ubicacion->nombre }} </option>
                 @endforeach
             </select>
+            @error('ubicacion')
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block "> {{$message}}</span>
+                </div>
+            @enderror
         </div>
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="salario"> Salario: </label>
@@ -73,22 +99,26 @@
 
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($salarios as $salario)
-                    <option value="{{ $salario->id }}" > {{ $salario->nombre }} </option>
+                    <option 
+                    {{ old('salario') == $salario->id ? 'selected' : '' }}
+                    value="{{ $salario->id }}" > {{ $salario->nombre }} </option>
                 @endforeach
             </select>
+            @error('salario')
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block "> {{$message}}</span>
+                </div>
+            @enderror
         </div>
         <div  class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="skills"> Habilidades y conocimientos: </label>
             @php
             $skills = ['HTML5', 'CSS3', 'CSSGrid', 'Flexbox', 'JavaScript', 'jQuery', 'Node', 'Angular', 'VueJS', 'ReactJS', 'React Hooks', 'Redux', 'Apollo', 'GraphQL', 'TypeScript', 'PHP', 'Laravel', 'Symfony', 'Python', 'Django', 'ORM', 'Sequelize', 'Mongoose', 'SQL', 'MVC', 'SASS', 'WordPress', 'Express', 'Deno', 'React Native', 'Flutter', 'MobX', 'C#', 'Ruby on Rails']
             @endphp
-
-
                 
             {{-- <habilidades></habilidades> --}}
                 <habilidades-component :skills="{{ json_encode($skills) }}"></habilidades-component>
-
-            
 
         </div>
         
@@ -96,11 +126,16 @@
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="descripcion"> Descripción del puesto: </label>
 
-            <div class="editable p-3 bg-gray-100 rounded form-input w-full text-gray-700 ">
+            <div class="editable p-3 bg-gray-100 rounded form-input w-full text-gray-700" ></div>
+            <input type="hidden" name="descripcion" id="descripcion" value="{{ old('descripcion') }}">
+            @error('descripcion')
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block "> {{$message}}</span>
+                </div>
+            @enderror
 
-            </div>
-
-            <input type="hidden" name="descripcion" id="descripcion" value="">
+            
             
         </div>
 
@@ -108,13 +143,18 @@
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="imagen"> Imagen vacante: </label>
 
-            <div class="dropzone rounded bg-gray-100 agrandar" id="dropzoneDevJobs">
+            <div class="dropzone rounded bg-gray-100 agrandar" id="dropzoneDevJobs"></div>
 
-            </div>
-
-            <input type="hidden" id="imagen" name="imagen">
-            <p id="error">  </p>
+            <input type="hidden" id="imagen" name="imagen" value="{{ old('imagen') }}">
+                <p id="error">  </p>
         </div>
+        
+        @error('imagen')
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block "> {{$message}}</span>
+            </div>
+        @enderror
         
         
         {{-- Button to save vacante --}}
@@ -127,7 +167,7 @@
         </div>        
     </form>
 
-    <pruebaestres-component></pruebaestres-component>
+    {{-- <pruebaestres-component></pruebaestres-component> --}}
 
 @endsection
 
@@ -140,6 +180,7 @@
 
     <script>
         Dropzone.autoDiscover = false;
+
         document.addEventListener('DOMContentLoaded', () => {
 
             //Editor ó MediumEditor.js
@@ -148,14 +189,23 @@
                      buttons : ['bold', 'italic', 'underline', 'quote', 'anchor', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'orderList', 'unorderedList', 'h2', 'h1', 'h3'],
                      static: true,
                      sticky: true
+                 },
+                 placeholder: {
+                     text: 'Información de la vacante'
                  }
              });
 
+
+            //Agrega al input hidden lo que el usuario escribe en medium editor 
             editor.subscribe('editableInput', function (eventObj, editable) {
             const contenido = editor.getContent();
             // console.log(contenido);
             document.querySelector('#descripcion').value = contenido;
+ 
         });
+
+        //LLena el editor con el contenido del input hidden
+        editor.setContent( document.querySelector('#descripcion').value  );
 
         //Dropzone
         const dropZoneDevJobs = new Dropzone('#dropzoneDevJobs', {
@@ -204,6 +254,24 @@
                 
                 axios.post('./borrarimagen', params )
                 .then(response => console.log(response));
+            },
+            init: function() {
+                if( document.querySelector('#imagen').value.trim() ){
+                    // console.log('Si, tenemos algo aqui');
+
+                    let imagenPublicada = {};
+                    imagenPublicada.size = 1234;
+                    imagenPublicada.name =  document.querySelector('#imagen').value;
+
+                    this.options.addedFile.call(this, imagenPublicada);
+                    this.options.thumbnail.call(this, imagenPublicada, `/storage/vacantes/${imagenPublicada.name}`);
+
+                    imagenPublicada.previewElement.classList.add('dz-sucess');
+                    imagenPublicada.previewElement.classList.add('dz-complete');
+
+                }else{
+                    console.log('No se ha cargado una imagen previamente');
+                }
             }
 
         });

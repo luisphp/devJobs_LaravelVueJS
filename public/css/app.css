@@ -4,7 +4,7 @@
 @tailwind utilities;
 .medium-editor-toolbar-active {
   visibility: visible;
-  background: rgba(56, 178, 172, var(--bg-opacity));
+  background: rgba(65, 90, 219, 0.8);
   color: black;
 }
 
