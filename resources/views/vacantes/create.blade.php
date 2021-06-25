@@ -20,10 +20,22 @@
 
     {{-- {{ $experiencias }} --}}
 
-    <form class="max-w-lg mx-auto my-10">
+    <form 
+            action="{{route('vacantes.store')}}"
+            method="POST" 
+            class="max-w-lg mx-auto my-10"
+            >
+            @csrf
+        
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="titulo"> Titulo </label>
             <input id="titulo" type="text" class="p-3 bg-gray-100  rounded form-input  w-full @error('titulo') border-red-500 @enderror" name="titulo" value="{{ old('titulo') }}" autofocus>
+            @error('titulo')
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block "> {{$message}}</span>
+                </div>
+            @enderror
         </div>
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="categoria"> Categoria:  </label>
@@ -115,7 +127,7 @@
         </div>        
     </form>
 
-    
+    <pruebaestres-component></pruebaestres-component>
 
 @endsection
 

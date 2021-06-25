@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VacanteController;
+use App\Http\Controllers\PruebaEstresController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes(['verify' => true]);
+
+Route::get('/',[App\Http\Controllers\VacanteController::class, 'index']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -25,8 +26,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/vacantes' ,[App\Http\Controllers\VacanteController::class, 'index'])->name('vacantes.index');
 Route::get('/vacantes/create' ,[App\Http\Controllers\VacanteController::class, 'create'])->name('vacantes.create');
+Route::post('/vacantes',[App\Http\Controllers\VacanteController::class, 'store'])->name('vacantes.store');
+// Route::post('/vacantes', 'VacanteController@store')->name('vacantes.store');
+
+
+
+
     // Ruta especial para subir imagen provenientes de dropzone
 Route::post('/vacantes/imagen',[App\Http\Controllers\VacanteController::class, 'imagen'])->name('vacantes.imagen');
 Route::post('/vacantes/borrarimagen',[App\Http\Controllers\VacanteController::class, 'borrarimagen'])->name('vacantes.borrarimagen');
 
-Route::get('/inicio' , [App\Http\Controllers\Inicio::class, 'index'])->name('inicioparticular');
+// Prueba de estres
+Route::get('/pruebaestres',[App\Http\Controllers\PruebaEstresController::class, 'index'])->name('pruebaestres');
+
+
+Route::get('/pruebaestres_ava',[App\Http\Controllers\PruebaEstresController::class, 'prueba_ava'])->name('pruebaestresava');
