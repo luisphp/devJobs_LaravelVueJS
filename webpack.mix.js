@@ -2,6 +2,7 @@ const mix = require('laravel-mix');
 require("tailwindcss");
 require('laravel-mix-tailwind');
 require('vue');
+require('jquery');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,6 +16,9 @@ require('vue');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+        .autoload({
+            jquery: ['$', 'window.jQuery', 'jQuery']
+        })
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
     .postCss("resources/css/app.css", "public/css", [

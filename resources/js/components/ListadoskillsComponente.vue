@@ -4,7 +4,7 @@
             <li v-for="(skill , i ) in this.skills"
                 v-bind:key="i"
                 class="border border-gray-500 px-10 py-3 mb-3 rounded mr-4 "
-                
+                :class="verificarClaseActiva(skill)"
                 @click="activar($event)"
                 >{{ skill }}</li>
         </ul>
@@ -15,13 +15,22 @@
 
 <script>
     export default {
-        props: ['skills'],
-        mounted(){
-            console.log(this.skills);
-        },
+        props: ['skills', 'oldskills'],
         data: function(){
             return {
                 habilidades: new Set()
+            }
+        },
+        mounted: function() {
+            // console.log('Los skills seleccionados anteriormente son: ', this.oldskills);
+            document.querySelector('#skills').value = this.oldskills;
+        },
+        created: function(){
+            if(this.oldskills){
+                const skills_array = this.oldskills.split(',');
+                skills_array.forEach( skill => { 
+                    this.habilidades.add(skill)
+                });
             }
         },
         methods: {
@@ -43,6 +52,13 @@
                 const string_habilidades = [...this.habilidades];
               //Agregar las habilidades al input hidden
               document.querySelector('#skills').value = string_habilidades;
+
+            },
+            verificarClaseActiva(skill){
+                // console.log('Desde clase activa: ', skill);
+
+                return this.habilidades.has(skill) ? 'bg-gray-700' : '';
+
 
             }
         }

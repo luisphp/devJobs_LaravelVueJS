@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Storage;
 class VacanteController extends Controller
 {
 
-    public function  __construct()
-    {
-        // revisar que el usuario este autenticado y verificado 
+    // public function  __construct()
+    // {
+    //     // revisar que el usuario este autenticado y verificado 
 
-        $this->middleware(['auth', 'verified']);
-    }
+    //     $this->middleware(['auth', 'verified']);
+    // }
 
     /**
      * Display a listing of the resource.
@@ -28,7 +28,13 @@ class VacanteController extends Controller
      */
     public function index()
     {
-        return view('vacantes.index');
+
+        // $vacantes = auth()->user()->vacantes();
+
+        $vacantes = Vacante::where('user_id', auth()->user()->id)->simplePaginate(10); 
+        
+        // dd($vacantes);
+        return view('vacantes.index', compact('vacantes'));
     }
 
     /**
@@ -55,19 +61,36 @@ class VacanteController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         //Validacion
         $data = $request->validate([
             'titulo' => 'required|min:6',
             'categoria' => 'required',
             'ubicacion' => 'required',
+            'experiencia' => 'required',
             'salario' => 'required',
             'descripcion' => 'required|min:30',
-            'imagen' => 'required'
+            'imagen' => 'required',
+            'skills' => 'required'
             
         ]);
 
-        return ("Desde store");
+        // dd($data);
+
+
+        auth()->user()->vacantes()->create([
+            'titulo' => $data['titulo'],
+            'imagen' => $data['imagen'],
+            'descripcion' => $data['descripcion'],
+            'skills' => $data['skills'],
+            'categoria_id' => $data['categoria'],
+            'experiencia_id' => $data['experiencia'],
+            'ubicacion_id' => $data['ubicacion'],
+            'salario_id' => $data['salario'],
+
+        ]);
+
+        return redirect()->route('vacantes.index');
     }
 
     /**
@@ -78,7 +101,10 @@ class VacanteController extends Controller
      */
     public function show(Vacante $vacante)
     {
-        //
+
+        // $vacante_seleccionada = Vacante::where('id', $vacante->id );
+
+        return view('vacantes.show')->with(['vacante' => $vacante]);
     }
 
     /**
@@ -89,7 +115,14 @@ class VacanteController extends Controller
      */
     public function edit(Vacante $vacante)
     {
-        //
+
+        //Consultas 
+        $categorias = Categoria::all();
+        $experiencias = Experiencia::all();
+        $ubicacions = Ubicacion::all();
+        $salarios = Salario::all();
+
+        return view('vacantes.edit')->with(['categorias' => $categorias, 'experiencias' => $experiencias, 'ubicacions' => $ubicacions, 'salarios' => $salarios]);
     }
 
     /**
@@ -110,9 +143,11 @@ class VacanteController extends Controller
      * @param  \App\Models\Vacante  $vacante
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vacante $vacante)
+    public function destroy(Request $request, Vacante $vacante)
     {
-        //
+        $vacante->delete();
+
+        return response()->json(['mensaje' => 'Se elimino la vacante correctamente: '.$vacante->titulo]);
     }
 
     /**
@@ -143,15 +178,34 @@ class VacanteController extends Controller
     public function borrarimagen(Request $request)
     {
 
-        if($request->ajax()){
             $imagen = $request->get('imagen');
+            // dd('Nombre de la imagen es: '.$imagen);
 
-
-            if(File::exists( 'storage/vacantes/'.$imagen )){
-               File::delete( 'storage/vacantes/'.$imagen );
+            if(File::exists( './storage/vacantes/'.$imagen )){
+               File::delete( './storage/vacantes/'.$imagen );
+            //    return response()->json(['message' => 'Se borro la imagen', 'status' => 200]);
+                return response('Borrado', 200);
+            }else{
+                // return response()->json(['message' => 'No borrado', 'status' => 200]);
+                return response('No borrado', 200);
             }
 
-            return response('Imagen Eliminada', 200);
-        }
+    }
+
+    /**
+     * Cambia el estado de una vacante
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cambiarEstadoVacante(Request $request, Vacante $vacante)
+    {
+
+        //Leer nuevo estado, asignarlo y guardarlo en la DB
+        $vacante->activa = $request->estado;
+        $vacante->save();
+
+          return response()->json(['respuesta' => 'Se hizo el cambio correctamente en la vacante: '.$vacante->titulo]);
+
     }
 }

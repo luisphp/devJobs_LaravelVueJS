@@ -16,17 +16,17 @@
 
 @section('content')
 
-    <h1 class="text-2xl text-center mt-10">Crear nueva vacante</h1>
+    <h1 class="text-2xl text-center mt-10">Editar vacante</h1>
 
-    {{-- {{ $experiencias }} --}}
+      {{-- {{ $experiencias }} --}}
 
-    <form 
-            action="{{route('vacantes.store')}}"
-            method="POST" 
-            class="max-w-lg mx-auto my-10"
-            >
-            @csrf
-        
+      <form 
+      action="{{route('vacantes.store')}}"
+      method="POST" 
+      class="max-w-lg mx-auto my-10"
+      >
+      @csrf
+  
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="titulo"> Titulo </label>
             <input id="titulo" type="text" class="p-3 bg-gray-100  rounded form-input  w-full @error('titulo') border-red-500 @enderror" name="titulo" value="{{ old('titulo') }}" autofocus>
@@ -176,9 +176,8 @@
                     Publicar vacante
                 </button>
         </div>        
-    </form>
+        </form>
 
-    {{-- <pruebaestres-component></pruebaestres-component> --}}
 
 @endsection
 
@@ -291,13 +290,8 @@
                     
                     );
             }
-
         });
-
-        
         });
-
-        
 
     </script>
 @endsection
