@@ -24,9 +24,9 @@ class VacantesSeed extends Seeder
             'activa' => '1',
             'categoria_id' => '1',
             'experiencia_id' => '2',
-            'ubicacion_id' => '3',
+            'ubicacion_id' => '2',
             'salario_id' => '3',
-            'user_id' => '1',
+            'user_id' => '2',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -39,9 +39,9 @@ class VacantesSeed extends Seeder
             'activa' => '1',
             'categoria_id' => '1',
             'experiencia_id' => '2',
-            'ubicacion_id' => '3',
+            'ubicacion_id' => '1',
             'salario_id' => '3',
-            'user_id' => '1',
+            'user_id' => '2',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);   
@@ -54,7 +54,7 @@ class VacantesSeed extends Seeder
             'activa' => '1',
             'categoria_id' => '1',
             'experiencia_id' => '2',
-            'ubicacion_id' => '3',
+            'ubicacion_id' => '4',
             'salario_id' => '3',
             'user_id' => '1',
             'created_at' => Carbon::now(),

@@ -16,20 +16,21 @@
 
 @section('content')
 
-    <h1 class="text-2xl text-center mt-10">Editar vacante</h1>
+    <h1 class="text-2xl text-center mt-10">Editar vacante "{{$vacante->titulo}}" </h1>
 
       {{-- {{ $experiencias }} --}}
 
       <form 
-      action="{{route('vacantes.store')}}"
+      action="{{route('vacantes.update', ['vacante' => $vacante->id])}}"
       method="POST" 
       class="max-w-lg mx-auto my-10"
       >
       @csrf
+      @method('PUT')
   
         <div class="mb-5">
             <label class="block text-gray-700 text-sm mb-2" for="titulo"> Titulo </label>
-            <input id="titulo" type="text" class="p-3 bg-gray-100  rounded form-input  w-full @error('titulo') border-red-500 @enderror" name="titulo" value="{{ old('titulo') }}" autofocus>
+            <input id="titulo" type="text" class="p-3 bg-gray-100  rounded form-input  w-full @error('titulo') border-red-500 @enderror" name="titulo"  autofocus value="{{$vacante->titulo}}">
             @error('titulo')
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
                     <strong class="font-bold">Error!</strong>
@@ -44,7 +45,7 @@
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($categorias as $categoria)
                     <option 
-                    {{ old('categoria') == $categoria->id ? 'selected' : '' }}
+                    {{ $vacante->categoria_id == $categoria->id ? 'selected' : '' }}
                         value="{{ $categoria->id }}" > {{ $categoria->nombre }} 
                     </option>
                 @endforeach
@@ -63,7 +64,7 @@
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($experiencias as $experiencia)
                     <option 
-                    {{ old('experiencia') == $experiencia->id ? 'selected' : '' }}
+                    {{ $vacante->experiencia_id == $experiencia->id ? 'selected' : '' }}
                     value="{{ $experiencia->id }}" > {{ $experiencia->nombre }} </option>
                 @endforeach
             </select>
@@ -82,7 +83,7 @@
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($ubicacions as $ubicacion)
                     <option 
-                    {{ old('ubicacion') == $ubicacion->id ? 'selected' : '' }}
+                    {{ $vacante->ubicacion_id == $ubicacion->id ? 'selected' : '' }}
                     value="{{ $ubicacion->id }}" > {{ $ubicacion->nombre }} </option>
                 @endforeach
             </select>
@@ -100,7 +101,7 @@
                 <option disabled selected> -- Selecciona -- </option>
                 @foreach ($salarios as $salario)
                     <option 
-                    {{ old('salario') == $salario->id ? 'selected' : '' }}
+                    {{ $vacante->salario_id == $salario->id ? 'selected' : '' }}
                     value="{{ $salario->id }}" > {{ $salario->nombre }} </option>
                 @endforeach
             </select>
@@ -121,7 +122,7 @@
             {{-- Componente VueJS --}}
                 <habilidades-component 
                 :skills="{{ json_encode($skills) }}"
-                :oldskills="{{ json_encode( old('skills') ) }}"
+                :oldskills="{{ json_encode( $vacante->skills ) }}"
                 ></habilidades-component>
                 @error('imagen')
                 <div 
@@ -138,7 +139,7 @@
             <label class="block text-gray-700 text-sm mb-2" for="descripcion"> Descripción del puesto: </label>
 
             <div class="editable p-3 bg-gray-100 rounded form-input w-full text-gray-700" ></div>
-            <input type="hidden" name="descripcion" id="descripcion" value="{{ old('descripcion') }}">
+            <input type="hidden" name="descripcion" id="descripcion" value="{{ $vacante->descripcion }}">
             @error('descripcion')
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded relative mt-3 mb-6" role="alert">
                     <strong class="font-bold">Error!</strong>
@@ -156,7 +157,7 @@
 
             <div class="dropzone rounded bg-gray-100 agrandar" id="dropzoneDevJobs"></div>
 
-            <input type="hidden" id="imagen" name="imagen" value="{{ old('imagen') }}">
+            <input type="hidden" id="imagen" name="imagen" value="{{ $vacante->imagen }}">
                 <p id="error">  </p>
         </div>
         
@@ -173,7 +174,7 @@
                 <button 
                     type="submit" 
                     class="bg-gray-500 w-full hover:bg-gray-700 text-gray-100 p-3 focus:outline-none focus:shadow-outline uppercase">
-                    Publicar vacante
+                    Actualizar vacante
                 </button>
         </div>        
         </form>
@@ -238,9 +239,10 @@
                     let imagenPublicada = {};
                     imagenPublicada.size = 1234;
                     imagenPublicada.name =  document.querySelector('#imagen').value;
+                    imagenPublicada.nombreServidor = document.querySelector('#imagen').value;
 
                     this.options.addedfile.call(this, imagenPublicada);
-                    this.options.thumbnail.call(this, imagenPublicada, `../storage/vacantes/${imagenPublicada.name}`);
+                    this.options.thumbnail.call(this, imagenPublicada, `../../storage/vacantes/${imagenPublicada.name}`);
 
                     imagenPublicada.previewElement.classList.add('dz-sucess');
                     imagenPublicada.previewElement.classList.add('dz-complete');
@@ -281,7 +283,7 @@
                 // console.log('El archivo borrado fue', file);
                 
                 params = {
-                    imagen: file.nombreServidor ?? document.querySelector('#imagen').value
+                    imagen: file.nombreServidor 
                 }
                 
                 axios.post('../vacantes/borrarimagen', params )

@@ -6,6 +6,12 @@
     
 @endsection
 
+@section('navegacion')
+
+    @include('ui.categoriasNav')
+    
+@endsection
+
 @section('content')
 
     <h1 class="text-3xl text-center mt-10 "> {{ $vacante->titulo }}  </h1>

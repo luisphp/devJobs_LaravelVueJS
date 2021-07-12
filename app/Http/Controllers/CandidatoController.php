@@ -16,6 +16,8 @@ class CandidatoController extends Controller
      */
     public function index(Request $request)
     {
+       
+        
 
         //Obtener el id actual
 
@@ -23,6 +25,9 @@ class CandidatoController extends Controller
 
         //Obtener los candidatos y la vacante
         $vacante = Vacante::findOrFail( $id_vacante );
+
+        // Solo el autor de la vacante podra ver a los candidatos de la misma
+        $this->authorize('view', $vacante);
 
         // dd($vacante->candidatos);
 
